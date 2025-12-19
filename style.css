@@ -926,23 +926,25 @@ header h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5px;
-    width: 44px;
-    height: 44px;
-    background: rgba(255, 255, 255, 0.15);
+    gap: 6px;
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 107, 53, 0.9);
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
-    padding: 10px;
+    padding: 12px;
     transition: all 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .hamburger-btn span {
     display: block;
-    width: 22px;
-    height: 2px;
+    width: 24px;
+    height: 3px;
     background: white;
-    border-radius: 2px;
+    border-radius: 3px;
     transition: all 0.3s ease;
 }
 
@@ -1037,8 +1039,9 @@ header h1 {
         flex: 1;
         flex-direction: row;
         gap: 12px;
+        overflow: hidden;
     }
-
+    
     .header-icon {
         font-size: 2rem;
     }
@@ -1052,6 +1055,7 @@ header h1 {
     }
 
     .header-right {
+        flex-shrink: 0;
         position: static;
     }
 
@@ -1061,7 +1065,7 @@ header h1 {
     }
 
     .hamburger-btn {
-        display: flex;
+        display: flex !important;
     }
 
     .mobile-menu {

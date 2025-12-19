@@ -34,17 +34,18 @@
                         <span></span>
                     </button>
                 </div>
-                <!-- Mobile Menu Dropdown -->
-                <div class="mobile-menu" id="mobileMenu">
-                    <button class="mobile-menu-item" id="mobileAdminBtn" onclick="toggleAdminAccess(); toggleMobileMenu();">
-                        <span class="lock-icon">🔒</span> Admin
-                    </button>
-                    <button class="mobile-menu-item" id="mobileAddBtn" onclick="openAddModal(); toggleMobileMenu();" disabled>
-                        <span>+</span> New Project
-                    </button>
-                </div>
             </div>
         </header>
+        
+        <!-- Mobile Menu Dropdown (outside header for better positioning) -->
+        <div class="mobile-menu" id="mobileMenu">
+            <button class="mobile-menu-item" id="mobileAdminBtn" onclick="toggleAdminAccess(); toggleMobileMenu();">
+                <span class="lock-icon">🔒</span> Admin
+            </button>
+            <button class="mobile-menu-item" id="mobileAddBtn" onclick="openAddModal(); toggleMobileMenu();" disabled>
+                <span>+</span> New Project
+            </button>
+        </div>
 
         <!-- Dashboard Stats Cards -->
         <div class="dashboard-stats" id="dashboardStats">
