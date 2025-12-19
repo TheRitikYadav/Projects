@@ -27,6 +27,21 @@
                         <span class="btn-icon">+</span>
                         <span class="btn-text">New Project</span>
                     </button>
+                    <!-- Hamburger Menu for Mobile -->
+                    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+                <!-- Mobile Menu Dropdown -->
+                <div class="mobile-menu" id="mobileMenu">
+                    <button class="mobile-menu-item" id="mobileAdminBtn" onclick="toggleAdminAccess(); toggleMobileMenu();">
+                        <span class="lock-icon">🔒</span> Admin
+                    </button>
+                    <button class="mobile-menu-item" id="mobileAddBtn" onclick="openAddModal(); toggleMobileMenu();" disabled>
+                        <span>+</span> New Project
+                    </button>
                 </div>
             </div>
         </header>
@@ -70,9 +85,8 @@
             </div>
         </div>
 
-        <!-- Filter Section -->
+        <!-- Filter Buttons -->
         <div class="filter-section">
-            <h2 class="section-title">Filter Projects</h2>
             <div class="filter-buttons">
                 <button class="filter-btn active" data-status="all">All Projects</button>
                 <button class="filter-btn" data-status="active">Active</button>
@@ -80,8 +94,6 @@
                 <button class="filter-btn" data-status="planned">Planned</button>
                 <button class="filter-btn" data-status="dead">Dead</button>
             </div>
-            <button class="clear-data-btn" id="clearDataBtn">🗑️ Clear All Data</button>
-            <span class="sync-status" id="syncStatus">🔄 Connecting...</span>
         </div>
 
         <!-- Projects Section -->
@@ -165,6 +177,12 @@
             </form>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p class="footer-tagline">Learn • Build • Deploy</p>
+        <a href="https://ritikyadav.com.np" target="_blank" class="footer-link">ritikyadav.com.np</a>
+    </footer>
 
     <script src="script.js"></script>
 </body>

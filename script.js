@@ -42,19 +42,19 @@ let isOnline = true;
 // No sample projects - start clean
 
 // Update sync status indicator
+// Sync status removed - function kept for compatibility
 function updateSyncStatus(status, message) {
-    const statusEl = document.getElementById('syncStatus');
-    statusEl.className = 'sync-status ' + status;
-    statusEl.textContent = message;
+    // Status indicator removed from UI
 }
 
 // Update Admin UI based on lock state
 function updateAdminUI() {
     const toggleBtn = document.getElementById('adminToggleBtn');
     const addBtn = document.getElementById('addProjectBtn');
+    const mobileAdminBtn = document.getElementById('mobileAdminBtn');
+    const mobileAddBtn = document.getElementById('mobileAddBtn');
     
     if (!toggleBtn || !addBtn) {
-        console.error('Admin UI elements not found');
         return;
     }
     
@@ -66,11 +66,25 @@ function updateAdminUI() {
         if (lockIcon) lockIcon.textContent = '🔓';
         if (lockText) lockText.textContent = 'Admin';
         addBtn.disabled = false;
+        
+        // Mobile menu items
+        if (mobileAdminBtn) {
+            mobileAdminBtn.classList.add('unlocked');
+            mobileAdminBtn.innerHTML = '<span class="lock-icon">🔓</span> Unlocked';
+        }
+        if (mobileAddBtn) mobileAddBtn.disabled = false;
     } else {
         toggleBtn.classList.remove('unlocked');
         if (lockIcon) lockIcon.textContent = '🔒';
         if (lockText) lockText.textContent = 'Locked';
         addBtn.disabled = true;
+        
+        // Mobile menu items
+        if (mobileAdminBtn) {
+            mobileAdminBtn.classList.remove('unlocked');
+            mobileAdminBtn.innerHTML = '<span class="lock-icon">🔒</span> Admin';
+        }
+        if (mobileAddBtn) mobileAddBtn.disabled = true;
     }
     
     // Show/hide action buttons in cards
@@ -332,10 +346,6 @@ function setupEventListeners() {
     }
 
     // Clear data button
-    document.getElementById('clearDataBtn').addEventListener('click', () => {
-        clearAllData();
-    });
-
     // Modal close
     document.querySelector('.close').addEventListener('click', closeModal);
     document.querySelector('.cancel-btn').addEventListener('click', closeModal);
@@ -722,6 +732,43 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// Toggle mobile menu
+function toggleMobileMenu() {
+    const hamburger = document.getElementById('hamburgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    if (hamburger && mobileMenu) {
+        hamburger.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+    }
+}
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', (e) => {
+    const hamburger = document.getElementById('hamburgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    if (hamburger && mobileMenu && mobileMenu.classList.contains('active')) {
+        if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+            hamburger.classList.remove('active');
+            mobileMenu.classList.remove('active');
+        }
+    }
+});
+
+// Open add project modal - called from mobile menu
+function openAddModal() {
+    if (!isAdminUnlocked) return;
+    
+    currentEditId = null;
+    document.getElementById('modalTitle').textContent = 'Add Project';
+    document.getElementById('projectName').value = '';
+    document.getElementById('projectDescription').value = '';
+    document.getElementById('projectStatus').value = 'planned';
+    updateStatusFields('planned');
+    document.getElementById('projectModal').style.display = 'block';
 }
 
 // Toggle admin access - called from onclick
