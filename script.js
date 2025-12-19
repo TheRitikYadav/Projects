@@ -73,9 +73,13 @@ function updateAdminUI() {
         addBtn.disabled = true;
     }
     
-    // Update action buttons in cards
-    document.querySelectorAll('.btn-edit, .btn-delete').forEach(btn => {
-        btn.disabled = !isAdminUnlocked;
+    // Show/hide action buttons in cards
+    document.querySelectorAll('.project-actions').forEach(actions => {
+        if (isAdminUnlocked) {
+            actions.classList.remove('hidden');
+        } else {
+            actions.classList.add('hidden');
+        }
     });
 }
 
@@ -495,9 +499,9 @@ function renderProjects() {
             </div>
             <div class="project-description">${escapeHtml(project.description || 'No description')}</div>
             ${getStatusDetails(project)}
-            <div class="project-actions">
-                <button class="btn-edit" onclick="editProject('${project.id}')" ${!isAdminUnlocked ? 'disabled' : ''}>Edit</button>
-                <button class="btn-delete" onclick="deleteProject('${project.id}')" ${!isAdminUnlocked ? 'disabled' : ''}>Delete</button>
+            <div class="project-actions ${!isAdminUnlocked ? 'hidden' : ''}">
+                <button class="btn-edit" onclick="editProject('${project.id}')">Edit</button>
+                <button class="btn-delete" onclick="deleteProject('${project.id}')">Delete</button>
             </div>
         </div>
     `).join('');
