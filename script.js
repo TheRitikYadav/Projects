@@ -95,6 +95,15 @@ function updateAdminUI() {
             actions.classList.add('hidden');
         }
     });
+    
+    // Show/hide admin-only elements (Ideas filter, Ideas stat card)
+    document.querySelectorAll('.admin-only').forEach(el => {
+        if (isAdminUnlocked) {
+            el.classList.remove('hidden');
+        } else {
+            el.classList.add('hidden');
+        }
+    });
 }
 
 // Setup PIN Modal
@@ -393,14 +402,14 @@ function updateDashboardStats() {
     const stats = {
         active: projects.filter(p => p.status === 'active').length,
         published: projects.filter(p => p.status === 'published').length,
-        planned: projects.filter(p => p.status === 'planned').length,
+        ideas: projects.filter(p => p.status === 'ideas').length,
         dead: projects.filter(p => p.status === 'dead').length,
         total: projects.length
     };
 
     document.getElementById('statActive').textContent = stats.active;
     document.getElementById('statPublished').textContent = stats.published;
-    document.getElementById('statPlanned').textContent = stats.planned;
+    document.getElementById('statIdeas').textContent = stats.ideas;
     document.getElementById('statDead').textContent = stats.dead;
     document.getElementById('statTotal').textContent = stats.total;
 }
@@ -412,7 +421,7 @@ function updateSectionTitle() {
         'all': 'All Projects',
         'active': 'Active Projects',
         'published': 'Published Projects',
-        'planned': 'Planned Projects',
+        'ideas': '💡 Ideas (Private)',
         'dead': 'Dead Projects'
     };
     titleElement.textContent = titles[currentFilter] || 'All Projects';
@@ -453,7 +462,7 @@ function getStatusDetails(project) {
             html += '</div></div>';
             return html;
         
-        case 'planned':
+        case 'ideas':
             if (project.vision) {
                 return `
                     <div class="project-details">
@@ -487,9 +496,16 @@ function getStatusDetails(project) {
 // Render projects based on current filter
 function renderProjects() {
     const grid = document.getElementById('projectsGrid');
-    const filteredProjects = currentFilter === 'all' 
+    
+    // Filter projects - hide "ideas" from non-admin users
+    let filteredProjects = currentFilter === 'all' 
         ? projects 
         : projects.filter(p => p.status === currentFilter);
+    
+    // If not admin, hide ideas projects (private)
+    if (!isAdminUnlocked) {
+        filteredProjects = filteredProjects.filter(p => p.status !== 'ideas');
+    }
 
     if (filteredProjects.length === 0) {
         grid.innerHTML = `
@@ -505,7 +521,7 @@ function renderProjects() {
         <div class="project-card ${project.status}" data-id="${project.id}">
             <div class="project-header">
                 <div class="project-name">${escapeHtml(project.name)}</div>
-                <span class="project-status ${project.status}">${project.status}</span>
+                <span class="project-status ${project.status}">${getStatusLabel(project.status)}</span>
             </div>
             <div class="project-description">${escapeHtml(project.description || 'No description')}</div>
             ${getStatusDetails(project)}
@@ -599,7 +615,7 @@ async function saveProject() {
             projectData.link = document.getElementById('projectLink').value.trim() || null;
             projectData.github = document.getElementById('projectGithub').value.trim() || null;
             break;
-        case 'planned':
+        case 'ideas':
             projectData.vision = document.getElementById('projectVision').value.trim() || null;
             break;
         case 'dead':
@@ -728,6 +744,16 @@ async function clearAllData() {
 }
 
 // Escape HTML to prevent XSS
+function getStatusLabel(status) {
+    const labels = {
+        'active': 'Active',
+        'published': 'Published',
+        'ideas': '💡 Idea',
+        'dead': 'Dead'
+    };
+    return labels[status] || status;
+}
+
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
@@ -742,6 +768,13 @@ function toggleMobileMenu() {
     if (hamburger && mobileMenu) {
         hamburger.classList.toggle('active');
         mobileMenu.classList.toggle('active');
+        
+        // Position the menu below the hamburger button
+        if (mobileMenu.classList.contains('active')) {
+            const rect = hamburger.getBoundingClientRect();
+            mobileMenu.style.top = (rect.bottom + 10) + 'px';
+            mobileMenu.style.right = (window.innerWidth - rect.right) + 'px';
+        }
     }
 }
 
@@ -766,8 +799,8 @@ function openAddModal() {
     document.getElementById('modalTitle').textContent = 'Add Project';
     document.getElementById('projectName').value = '';
     document.getElementById('projectDescription').value = '';
-    document.getElementById('projectStatus').value = 'planned';
-    updateStatusFields('planned');
+    document.getElementById('projectStatus').value = 'ideas';
+    updateStatusFields('ideas');
     document.getElementById('projectModal').style.display = 'block';
 }
 

@@ -244,7 +244,7 @@ header h1 {
     background: #2196F3;
 }
 
-.stat-card.stat-planned::before {
+.stat-card.stat-ideas::before {
     background: #FF6B35;
 }
 
@@ -378,7 +378,7 @@ header h1 {
     background: #2196F3;
 }
 
-.project-card.planned::before {
+.project-card.ideas::before {
     background: #FF6B35;
 }
 
@@ -419,7 +419,7 @@ header h1 {
     color: #2196F3;
 }
 
-.project-status.planned {
+.project-status.ideas {
     background: #FFF3E0;
     color: #FF6B35;
 }
@@ -797,7 +797,7 @@ header h1 {
     border-left-color: #2196F3;
 }
 
-.planned-fields {
+.ideas-fields {
     border-left-color: #FF6B35;
 }
 
@@ -964,15 +964,15 @@ header h1 {
 
 .mobile-menu {
     display: none;
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: auto;
     right: 20px;
     background: rgba(26, 42, 70, 0.98);
     backdrop-filter: blur(20px);
     border-radius: 12px;
     padding: 10px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    z-index: 100;
+    z-index: 1000;
     min-width: 180px;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }

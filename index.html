@@ -15,7 +15,7 @@
                     <div class="header-icon">🚀</div>
                     <div class="header-text">
                         <h1>Ritik's Projects</h1>
-                        <p class="header-subtitle">Build • Launch • Iterate • Succeed</p>
+                        <p class="header-subtitle">Learn • Build • Deploy</p>
                     </div>
                 </div>
                 <div class="header-right">
@@ -62,11 +62,11 @@
                     <div class="stat-label">Published</div>
                 </div>
             </div>
-            <div class="stat-card stat-planned">
-                <div class="stat-icon">📋</div>
+            <div class="stat-card stat-ideas admin-only">
+                <div class="stat-icon">💡</div>
                 <div class="stat-content">
-                    <div class="stat-value" id="statPlanned">0</div>
-                    <div class="stat-label">Planned</div>
+                    <div class="stat-value" id="statIdeas">0</div>
+                    <div class="stat-label">Ideas</div>
                 </div>
             </div>
             <div class="stat-card stat-dead">
@@ -91,7 +91,7 @@
                 <button class="filter-btn active" data-status="all">All Projects</button>
                 <button class="filter-btn" data-status="active">Active</button>
                 <button class="filter-btn" data-status="published">Published</button>
-                <button class="filter-btn" data-status="planned">Planned</button>
+                <button class="filter-btn admin-only" data-status="ideas">💡 Ideas</button>
                 <button class="filter-btn" data-status="dead">Dead</button>
             </div>
         </div>
@@ -137,7 +137,7 @@
                 <select id="projectStatus" required>
                     <option value="active">Active</option>
                     <option value="published">Published</option>
-                    <option value="planned">Planned</option>
+                    <option value="ideas">💡 Idea (Private)</option>
                     <option value="dead">Dead</option>
                 </select>
                 
@@ -158,8 +158,8 @@
                     <input type="url" id="projectGithub" placeholder="https://github.com/username/repo">
                 </div>
 
-                <!-- Planned: Vision -->
-                <div class="status-fields planned-fields">
+                <!-- Ideas: Vision -->
+                <div class="status-fields ideas-fields">
                     <label>Vision</label>
                     <textarea id="projectVision" placeholder="What's the long-term vision for this project?" rows="2"></textarea>
                 </div>
