@@ -24,10 +24,6 @@ A modern, card-based project management dashboard with cloud sync and admin prot
 - SHA-256 encryption for PIN
 
 
-1. Go to [pages.cloudflare.com](https://pages.cloudflare.com)
-2. Connect your Git repository or upload directly
-3. Deploy!
-
 ## 🔐 Admin Access
 
 The dashboard is protected by a 4-digit PIN.
