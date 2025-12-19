@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ritik's Project Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="header-icon">🚀</div>
+                    <div class="header-text">
+                        <h1>Ritik's Projects</h1>
+                        <p class="header-subtitle">Build • Launch • Iterate • Succeed</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="admin-toggle-btn" id="adminToggleBtn" onclick="toggleAdminAccess()">
+                        <span class="lock-icon">🔒</span>
+                        <span class="lock-text">Locked</span>
+                    </button>
+                    <button class="add-project-btn-header" id="addProjectBtn" disabled>
+                        <span class="btn-icon">+</span>
+                        <span class="btn-text">New Project</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Stats Cards -->
+        <div class="dashboard-stats" id="dashboardStats">
+            <div class="stat-card stat-active">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="statActive">0</div>
+                    <div class="stat-label">Active</div>
+                </div>
+            </div>
+            <div class="stat-card stat-published">
+                <div class="stat-icon">🚀</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="statPublished">0</div>
+                    <div class="stat-label">Published</div>
+                </div>
+            </div>
+            <div class="stat-card stat-planned">
+                <div class="stat-icon">📋</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="statPlanned">0</div>
+                    <div class="stat-label">Planned</div>
+                </div>
+            </div>
+            <div class="stat-card stat-dead">
+                <div class="stat-icon">💀</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="statDead">0</div>
+                    <div class="stat-label">Dead</div>
+                </div>
+            </div>
+            <div class="stat-card stat-total">
+                <div class="stat-icon">📁</div>
+                <div class="stat-content">
+                    <div class="stat-value" id="statTotal">0</div>
+                    <div class="stat-label">Total Projects</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <h2 class="section-title">Filter Projects</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-status="all">All Projects</button>
+                <button class="filter-btn" data-status="active">Active</button>
+                <button class="filter-btn" data-status="published">Published</button>
+                <button class="filter-btn" data-status="planned">Planned</button>
+                <button class="filter-btn" data-status="dead">Dead</button>
+            </div>
+            <button class="clear-data-btn" id="clearDataBtn">🗑️ Clear All Data</button>
+            <span class="sync-status" id="syncStatus">🔄 Connecting...</span>
+        </div>
+
+        <!-- Projects Section -->
+        <div class="projects-section">
+            <h2 class="section-title" id="projectsSectionTitle">All Projects</h2>
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Projects will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- PIN Modal -->
+    <div class="modal" id="pinModal">
+        <div class="modal-content pin-modal-content">
+            <span class="close" id="closePinModal">&times;</span>
+            <div class="pin-header">
+                <span class="pin-icon">🔐</span>
+                <h2>Admin Access</h2>
+                <p>Enter 4-digit PIN to unlock editing</p>
+            </div>
+            <div class="pin-input-container">
+                <input type="password" id="pin1" class="pin-digit" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                <input type="password" id="pin2" class="pin-digit" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                <input type="password" id="pin3" class="pin-digit" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                <input type="password" id="pin4" class="pin-digit" maxlength="1" inputmode="numeric" pattern="[0-9]">
+            </div>
+            <p class="pin-error" id="pinError"></p>
+            <button class="pin-submit-btn" id="pinSubmitBtn">Unlock</button>
+            <p class="pin-hint">Enter your admin PIN</p>
+        </div>
+    </div>
+
+    <!-- Add/Edit Project Modal -->
+    <div class="modal" id="projectModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle">Add New Project</h2>
+            <form id="projectForm">
+                <input type="text" id="projectName" placeholder="Project Name" required>
+                <textarea id="projectDescription" placeholder="Description" rows="3"></textarea>
+                <select id="projectStatus" required>
+                    <option value="active">Active</option>
+                    <option value="published">Published</option>
+                    <option value="planned">Planned</option>
+                    <option value="dead">Dead</option>
+                </select>
+                
+                <!-- Active: Progress -->
+                <div class="status-fields active-fields">
+                    <label>Progress (%)</label>
+                    <input type="range" id="projectProgress" min="0" max="100" value="0">
+                    <span class="progress-value" id="progressValue">0%</span>
+                </div>
+
+                <!-- Published: Technology & Links -->
+                <div class="status-fields published-fields">
+                    <label>Technologies Used</label>
+                    <input type="text" id="projectTech" placeholder="e.g., React, Node.js, MongoDB">
+                    <label>Live URL</label>
+                    <input type="url" id="projectLink" placeholder="https://example.com">
+                    <label>GitHub Repository</label>
+                    <input type="url" id="projectGithub" placeholder="https://github.com/username/repo">
+                </div>
+
+                <!-- Planned: Vision -->
+                <div class="status-fields planned-fields">
+                    <label>Vision</label>
+                    <textarea id="projectVision" placeholder="What's the long-term vision for this project?" rows="2"></textarea>
+                </div>
+
+                <!-- Dead: Reason -->
+                <div class="status-fields dead-fields">
+                    <label>Reason</label>
+                    <textarea id="projectReason" placeholder="Why was this project discontinued?" rows="2"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit">Save</button>
+                    <button type="button" class="cancel-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
